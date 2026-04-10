@@ -33,3 +33,12 @@ Migracje tworza podstawowe statusy:
 - Oczekuje na klienta
 - Zrealizowane
 - Anulowane
+
+<h2>Screenshots</h2>
+
+<p align="center">
+  <img src="github_images/1.png" width="45%" />
+  <img src="github_images/2.png" width="45%" />
+  <img src="github_images/3.png" width="45%" />
+</p>
+

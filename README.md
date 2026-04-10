@@ -1,17 +1,17 @@
-# System rezerwacji / zamowien
+# System rezerwacji / zamowień
 
-Prosty projekt w Django do obslugi klientow, zamowien i rezerwacji dla firmy.
+Prosty projekt w Django do obslugi klientow, zamowień i rezerwacji dla firmy.
 
-## Co jest w srodku
+## Co jest w środku
 
-- logowanie uzytkownika
+- logowanie użytkownika
 - panel startowy z podsumowaniem
 - baza klientow
 - formularze dodawania i edycji
 - statusy oparte o baze danych
 - panel admina Django
 
-## Jak uruchomic
+## Jak uruchomić
 
 ```bash
 python manage.py migrate
@@ -24,9 +24,9 @@ Po uruchomieniu:
 - panel aplikacji: `http://127.0.0.1:8000/`
 - panel admina: `http://127.0.0.1:8000/admin/`
 
-## Domyslne statusy
+## Domyślne statusy
 
-Migracje tworza podstawowe statusy:
+Migracje tworzą podstawowe statusy:
 
 - Nowe
 - W trakcie

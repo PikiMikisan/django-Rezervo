@@ -34,7 +34,7 @@ Migracje tworza podstawowe statusy:
 - Zrealizowane
 - Anulowane
 
-<h2>Screenshots</h2>
+<h2>Zrzuty ekranu</h2>
 
 <p align="center">
   <img src="github_images/1.png" width="45%" />

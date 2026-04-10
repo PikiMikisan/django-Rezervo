@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Panel firmy{% endblock %}
+
+{% block content %}
+    <section class="hero-panel">
+        <div class="hero-copy">
+            <p class="eyebrow">Live Workspace</p>
+            <h1>Wszystko w jednym miejscu</h1>
+            <p class="muted">Nowocześniejszy panel do obsługi zamówień, rezerwacji i klientów z ciemnym motywem i szybszym podglądem pracy firmy.</p>
+        </div>
+        <div class="hero-badges">
+            <div class="hero-chip">
+                <span>Otwarte</span>
+                <strong>{{ stats.orders_open }}</strong>
+            </div>
+            <div class="hero-chip">
+                <span>Klienci</span>
+                <strong>{{ stats.clients_total }}</strong>
+            </div>
+            <div class="hero-chip">
+                <span>Wartość</span>
+                <strong>{{ stats.revenue_total }} zł</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-head">
+        <div>
+            <p class="eyebrow">Panel firmy</p>
+            <p class="muted">Szybki podgląd zamówień, rezerwacji i bieżących terminów.</p>
+        </div>
+        <div class="page-actions">
+            <a class="primary-button" href="{% url 'order_create' %}">Nowe zgłoszenie</a>
+            <a class="secondary-button" href="{% url 'client_create' %}">Nowy klient</a>
+        </div>
+    </section>
+
+    <section class="stats-grid">
+        <article class="stat-card">
+            <span>Łącznie zgłoszeń</span>
+            <strong>{{ stats.orders_total }}</strong>
+        </article>
+        <article class="stat-card">
+            <span>Otwarte</span>
+            <strong>{{ stats.orders_open }}</strong>
+        </article>
+        <article class="stat-card">
+            <span>Zamknięte</span>
+            <strong>{{ stats.orders_closed }}</strong>
+        </article>
+        <article class="stat-card">
+            <span>Klienci</span>
+            <strong>{{ stats.clients_total }}</strong>
+        </article>
+        <article class="stat-card stat-card-wide">
+            <span>Wartość wszystkich zgłoszeń</span>
+            <strong>{{ stats.revenue_total }} zł</strong>
+        </article>
+    </section>
+
+    <section class="panel-grid">
+        <article class="panel-card">
+            <div class="section-head">
+                <h2>Statusy</h2>
+            </div>
+            <div class="status-list">
+                {% for status in status_summary %}
+                    <div class="status-row">
+                        <div class="status-dot" style="background: {{ status.color }}"></div>
+                        <span>{{ status.name }}</span>
+                        <strong>{{ status.total }}</strong>
+                    </div>
+                {% empty %}
+                    <p class="muted">Brak statusów. Dodaj je w panelu admina lub odpal migracje startowe.</p>
+                {% endfor %}
+            </div>
+        </article>
+
+        <article class="panel-card">
+            <div class="section-head">
+                <h2>Nadchodzące terminy</h2>
+            </div>
+            <div class="stack-list">
+                {% for order in upcoming_orders %}
+                    <a class="stack-item" href="{% url 'order_detail' order.pk %}">
+                        <strong>{{ order.title }}</strong>
+                        <span>{{ order.client }}</span>
+                        <small>{{ order.scheduled_for|date:"d.m.Y H:i" }}</small>
+                    </a>
+                {% empty %}
+                    <p class="muted">Brak zaplanowanych terminów.</p>
+                {% endfor %}
+            </div>
+        </article>
+    </section>
+
+    <section class="panel-card">
+        <div class="section-head">
+            <h2>Ostatnio dodane</h2>
+            <a href="{% url 'order_list' %}">Zobacz wszystko</a>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tytuł</th>
+                        <th>Klient</th>
+                        <th>Status</th>
+                        <th>Typ</th>
+                        <th>Kwota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in recent_orders %}
+                        <tr>
+                            <td><a href="{% url 'order_detail' order.pk %}">{{ order.title }}</a></td>
+                            <td>{{ order.client }}</td>
+                            <td>{{ order.status }}</td>
+                            <td>{{ order.get_kind_display }}</td>
+                            <td>{{ order.total_price }} zł</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">Nie ma jeszcze żadnych zgłoszeń.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Szczegóły zgłoszenia{% endblock %}
+
+{% block content %}
+    <section class="page-head">
+        <div>
+            <p class="eyebrow">{{ order.get_kind_display }}</p>
+            <h1>{{ order.title }}</h1>
+            <p class="muted">{{ order.service_name }}</p>
+        </div>
+        <div class="page-actions">
+            <a class="secondary-button" href="{% url 'order_update' order.pk %}">Edytuj</a>
+            <a class="secondary-button" href="{% url 'order_list' %}">Wróć do listy</a>
+        </div>
+    </section>
+
+    <section class="panel-grid">
+        <article class="panel-card">
+            <div class="section-head">
+                <h2>Dane klienta</h2>
+            </div>
+            <dl class="details-list">
+                <div>
+                    <dt>Klient</dt>
+                    <dd>{{ order.client.name }}</dd>
+                </div>
+                <div>
+                    <dt>Firma</dt>
+                    <dd>{{ order.client.company_name|default:"-" }}</dd>
+                </div>
+                <div>
+                    <dt>E-mail</dt>
+                    <dd>{{ order.client.email }}</dd>
+                </div>
+                <div>
+                    <dt>Telefon</dt>
+                    <dd>{{ order.client.phone }}</dd>
+                </div>
+            </dl>
+        </article>
+
+        <article class="panel-card">
+            <div class="section-head">
+                <h2>Status i termin</h2>
+            </div>
+            <dl class="details-list">
+                <div>
+                    <dt>Aktualny status</dt>
+                    <dd><span class="badge" style="--badge-color: {{ order.status.color }}">{{ order.status }}</span></dd>
+                </div>
+                <div>
+                    <dt>Termin</dt>
+                    <dd>{% if order.scheduled_for %}{{ order.scheduled_for|date:"d.m.Y H:i" }}{% else %}Nie ustawiono{% endif %}</dd>
+                </div>
+                <div>
+                    <dt>Ilość</dt>
+                    <dd>{{ order.quantity }}</dd>
+                </div>
+                <div>
+                    <dt>Kwota</dt>
+                    <dd>{{ order.total_price }} zł</dd>
+                </div>
+            </dl>
+
+            <form method="post" action="{% url 'order_status_update' order.pk %}" class="inline-form">
+                {% csrf_token %}
+                {{ status_form.status }}
+                <button class="primary-button" type="submit">Zmień status</button>
+            </form>
+        </article>
+    </section>
+
+    <section class="panel-grid">
+        <article class="panel-card">
+            <div class="section-head">
+                <h2>Uwagi od klienta</h2>
+            </div>
+            <div>{{ order.notes|default:"Brak dodatkowych uwag."|linebreaks }}</div>
+        </article>
+
+        <article class="panel-card">
+            <div class="section-head">
+                <h2>Notatki wewnętrzne</h2>
+            </div>
+            <div>{{ order.internal_notes|default:"Brak notatek."|linebreaks }}</div>
+        </article>
+    </section>
+{% endblock %}

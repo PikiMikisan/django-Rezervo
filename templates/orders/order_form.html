@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Formularz zgłoszenia{% endblock %}
+
+{% block content %}
+    <section class="page-head">
+        <div>
+            <p class="eyebrow">Formularz</p>
+            <h1>{% if object %}Edytuj zgłoszenie{% else %}Dodaj zgłoszenie{% endif %}</h1>
+        </div>
+    </section>
+
+    <section class="panel-card">
+        <form method="post" class="card-form two-columns">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-row {% if field.name == 'notes' or field.name == 'internal_notes' %}full-width{% endif %}">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <small class="error">{{ field.errors|join:", " }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-actions full-width">
+                <button type="submit" class="primary-button">Zapisz</button>
+                <a class="secondary-button" href="{% url 'order_list' %}">Wróć do listy</a>
+            </div>
+        </form>
+    </section>
+{% endblock %}

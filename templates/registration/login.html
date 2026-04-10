@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Logowanie{% endblock %}
+
+{% block content %}
+    <section class="auth-card">
+        <p class="eyebrow">Projekt 1</p>
+        <h1>Zaloguj się do systemu</h1>
+        <p class="muted">Panel do obsługi zamówień, rezerwacji i klientów.</p>
+
+        <form method="post" class="card-form">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                <div class="form-row">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <small class="error">{{ field.errors|join:", " }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="primary-button">Zaloguj</button>
+        </form>
+    </section>
+{% endblock %}

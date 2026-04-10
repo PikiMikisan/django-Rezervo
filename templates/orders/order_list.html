@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Zamówienia i rezerwacje{% endblock %}
+
+{% block content %}
+    <section class="page-head">
+        <div>
+            <p class="eyebrow">Obsługa zgłoszeń</p>
+            <h1>Zamówienia i rezerwacje</h1>
+        </div>
+        <a class="primary-button" href="{% url 'order_create' %}">Dodaj zgłoszenie</a>
+    </section>
+
+    <section class="panel-card">
+        <form method="get" class="filters">
+            <input type="text" name="q" placeholder="Szukaj po kliencie, usłudze lub tytule" value="{{ query }}">
+            <select name="status">
+                <option value="">Wszystkie statusy</option>
+                {% for status in statuses %}
+                    <option value="{{ status.slug }}" {% if selected_status == status.slug %}selected{% endif %}>{{ status.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="kind">
+                <option value="">Wszystkie typy</option>
+                {% for value, label in kinds %}
+                    <option value="{{ value }}" {% if selected_kind == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="secondary-button">Filtruj</button>
+        </form>
+    </section>
+
+    <section class="panel-card">
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tytuł</th>
+                        <th>Klient</th>
+                        <th>Status</th>
+                        <th>Termin</th>
+                        <th>Typ</th>
+                        <th>Kwota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td><a href="{% url 'order_detail' order.pk %}">{{ order.title }}</a></td>
+                            <td>{{ order.client }}</td>
+                            <td><span class="badge" style="--badge-color: {{ order.status.color }}">{{ order.status }}</span></td>
+                            <td>{% if order.scheduled_for %}{{ order.scheduled_for|date:"d.m.Y H:i" }}{% else %}-{% endif %}</td>
+                            <td>{{ order.get_kind_display }}</td>
+                            <td>{{ order.total_price }} zł</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6">Brak wyników dla wybranych filtrów.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

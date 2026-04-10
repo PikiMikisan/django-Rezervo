@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Formularz klienta{% endblock %}
+
+{% block content %}
+    <section class="page-head">
+        <div>
+            <p class="eyebrow">Klient</p>
+            <h1>{% if object %}Edytuj klienta{% else %}Dodaj klienta{% endif %}</h1>
+        </div>
+    </section>
+
+    <section class="panel-card">
+        <form method="post" class="card-form two-columns">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-row {% if field.name == 'notes' %}full-width{% endif %}">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <small class="error">{{ field.errors|join:", " }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-actions full-width">
+                <button type="submit" class="primary-button">Zapisz klienta</button>
+                <a class="secondary-button" href="{% url 'client_list' %}">Wróć</a>
+            </div>
+        </form>
+    </section>
+{% endblock %}

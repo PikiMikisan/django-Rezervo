@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Klienci{% endblock %}
+
+{% block content %}
+    <section class="page-head">
+        <div>
+            <p class="eyebrow">Baza klientów</p>
+            <h1>Klienci</h1>
+        </div>
+        <a class="primary-button" href="{% url 'client_create' %}">Dodaj klienta</a>
+    </section>
+
+    <section class="panel-card">
+        <form method="get" class="filters">
+            <input type="text" name="q" placeholder="Szukaj po nazwie, firmie, e-mailu lub telefonie" value="{{ query }}">
+            <button type="submit" class="secondary-button">Szukaj</button>
+        </form>
+    </section>
+
+    <section class="panel-card">
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Klient</th>
+                        <th>Firma</th>
+                        <th>E-mail</th>
+                        <th>Telefon</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                        <tr>
+                            <td>{{ client.name }}</td>
+                            <td>{{ client.company_name|default:"-" }}</td>
+                            <td>{{ client.email }}</td>
+                            <td>{{ client.phone }}</td>
+                            <td><a href="{% url 'client_update' client.pk %}">Edytuj</a></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">Brak klientów w bazie.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}
